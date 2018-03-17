@@ -28,7 +28,7 @@ TODO:
 
 - **Define the correct HSV range in worker.py for yellow objects**
 
-- Add distance detection
+- ~~Add distance detection~~ added in Jeff
 
 
 For data to be accepted, the server(s) need(s) to accept ports: 42069, 6969, 6666. 42069 for commands, 6969 for video and 6666 for debugging (not implemented yet but can be accessed simply by using dconn.sent("your desired string") in runner.py)
