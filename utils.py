@@ -6,16 +6,16 @@ import numpy as np
 import base64
 import threading
 
-#lower_yellow = np.array([20,0,20])
-#upper_yellow = np.array([55,180,255])
-lower_yellow = np.array([20,120,70])
-upper_yellow = np.array([50,240,220])
-#lower_yellow = np.array([0,0,0])
-#upper_yellow = np.array([0,0,0])
+meterdiff = 95
+
+lower_1 = np.array([10,110,85])
+upper_1 = np.array([45,220,255])
+lower_2 = np.array([0,50,80])
+upper_2 = np.array([15,255,255])
 
 camera = 0
 
-delay = 0.02
+delay = 0.05
 cport = 42069
 iport = 6969
 dport = 6666

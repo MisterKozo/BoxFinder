@@ -10,7 +10,7 @@ import sys
 import threading
 import utils
 import time
-import tcp
+import signal
 
 rip = '10.56.35.2'
 if len(sys.argv) != 2:
@@ -28,23 +28,34 @@ camera = camera.Camera()
 
 cconn       = network.Network(rip, utils.cport)
 iconn       = network.Network(dip, utils.iport)
-#dconn       = network.Network(rip, utils.dport)
+
+def signal_handler(signal, frame):
+        print("Exiting safely")
+	cconn.halt()
+        iconn.halt()
+        sys.exit(0)
+signal.signal(signal.SIGINT, signal_handler)
 
 coordinates = coordinates.Coordinates()
 
 def run():
-	mat = camera.tomat()
-	coordinates = worker.process(mat)
+	mat = camera.tomat().copy()
+	picture,coordinates,_ = worker.process(mat)
+#	print(str(coordinates))
 	cconn.send(str(coordinates))
 	coordinates.latest = time.time()
-	matstr = utils.mattostr(picture)
+#	matstr = utils.mattostr(mat)
+#	matstr = utils.mattostr(picture)
+	print(str(coordinates.cX))
+	matstr = utils.mattostr(worker.directtorect(mat, coordinates.cX))
 	iconn.send(matstr)
+#	time.sleep(0.6)
 
 while True:
-	cconn = network.Network(rip, utils.cport)
-	iconn = network.Network(dip, utils.iport)
 	cconn.connect()
 	iconn.connect()
-	while iconn.alive and cconn.alive:
-		if camera.latest != -100 and camera.latest > coordinates.latest:
+	while cconn.alive:
+		if camera.latest >= 0 and camera.latest > coordinates.latest:
 			run()
+	cconn.halt()
+	iconn.halt()
