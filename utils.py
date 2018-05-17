@@ -59,4 +59,14 @@ def mattobase64(mat):
 	return str
 
 def int_to_bytes(val, num_bytes):
-    return [(val & (0xff << pos*8)) >> pos*8 for pos in range(num_bytes)]
+	return [(val & (0xff << pos*8)) >> pos*8 for pos in range(num_bytes)]
+
+def msg_len_ba(message):
+	length = len(message)
+	byto = int_to_bytes(length, 4)
+	ba = bytearray()
+	ba.append(byto[0])
+	ba.append(byto[1])
+	ba.append(byto[2])
+	ba.append(byto[3])
+	return ba

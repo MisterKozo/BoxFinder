@@ -26,8 +26,8 @@ print("Launched!")
 
 camera = camera.Camera()
 
-cconn       = network.Network(rip, utils.cport)
-iconn       = network.Network(dip, utils.iport)
+cconn = network.Network(rip, utils.cport)
+iconn = network.Network(dip, utils.iport)
 
 def signal_handler(signal, frame):
         print("Exiting safely")
@@ -41,15 +41,10 @@ coordinates = coordinates.Coordinates()
 def run():
 	mat = camera.tomat().copy()
 	picture,coordinates,_ = worker.process(mat)
-#	print(str(coordinates))
 	cconn.send(str(coordinates))
 	coordinates.latest = time.time()
-#	matstr = utils.mattostr(mat)
-#	matstr = utils.mattostr(picture)
-	print(str(coordinates.cX))
 	matstr = utils.mattostr(worker.directtorect(mat, coordinates.cX))
 	iconn.send(matstr)
-#	time.sleep(0.6)
 
 while True:
 	cconn.connect()
